@@ -11,9 +11,12 @@
 void doListen(int sockfd, int * isConnected);
 void doWrite(int sockfd, int * isConnected);
 
+int * isConnected=(int *)malloc(sizeof(int));
+
+
 int main(int argc, char *argv[])
 {
-	int * isConnected=(int *)malloc(sizeof(int));
+	
     int sockfd, portno, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;
@@ -104,14 +107,15 @@ void doListen(int sockfd, int * isConnected){
 		bzero(buffer,256);
 		
 
-		n = read(sockfd,buffer,255);
+		n = recv(sockfd,buffer,255,0);
 		if (n <= 0) 
 		{
 			perror("ERROR reading from socket");
 			*isConnected=0;
+			std::cout<<isConnected;
 			return;
 		}
-		printf("child got: %s\n",buffer);
+		printf("\nReceived: %s\n",buffer);
 
 	}
 	
@@ -127,7 +131,7 @@ void doWrite(int sockfd, int * isConnected){
 
 	while(*isConnected){
 		//std::cout<<*isConnected;
-		printf("Please enter the message: ");
+		printf("\nPlease enter the message: ");
 		bzero(buffer,256);
 		fgets(buffer,255,stdin);
 		/* Send message to the server */
@@ -135,7 +139,7 @@ void doWrite(int sockfd, int * isConnected){
 		n = write(sockfd,buffer,strlen(buffer));
 		
 		
-		std::cout<<"client - parent :" << n<<std::endl;
+		//std::cout<<"client - parent :" << n<<std::endl;
 		if (n <= 0) 
 		{
 			perror("ERROR writing to socket");
@@ -143,7 +147,7 @@ void doWrite(int sockfd, int * isConnected){
 			return;
 		}
 
-		std::cout<<"Writer is connected: "<<*isConnected<<std::endl;
+		std::cout<<"Writer isConnected: "<<*isConnected<<std::endl;
 
 	}
 
