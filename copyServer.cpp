@@ -4,9 +4,17 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <unistd.h>
+#include <vector>
+
+void doWork();
+
+using namespace std;
 
 int main( int argc, char *argv[] )
 {
+	std::vector<int*>* clients = new vector<int*>(10);
+
+
     int sockfd, newsockfd, portno, clilen;
     char buffer[256];
     struct sockaddr_in serv_addr, cli_addr;
@@ -40,6 +48,8 @@ int main( int argc, char *argv[] )
     listen(sockfd,5);
     clilen = sizeof(cli_addr);
 
+	//loop begin
+
     /* Accept actual connection from the client */
     newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, 
                                 (socklen_t*)&clilen);
@@ -50,24 +60,37 @@ int main( int argc, char *argv[] )
     }
     /* If connection is established then start communicating */
     
-    /* Write a response to the client */
-    n = write(newsockfd,"I got your message",18);
-    if (n < 0)
-    {
-        perror("ERROR writing to socket");
-        return 1;
-    }
-
-	bzero(buffer,256);
-	n = read( newsockfd,buffer,255 );
-	if (n < 0)
+	while (1)
 	{
-		perror("ERROR reading from socket");
-		return 1;
+		bzero(buffer,256);
+		n = read( newsockfd,buffer,255 );
+		if (n < 0)
+		{
+			perror("ERROR reading from socket");
+			return 1;
+		}
+		printf("Here is the message: %s\n",buffer);
+
+		/* Write a response to the client */
+		n = write(newsockfd,buffer,255);
+		if (n < 0)
+		{
+			perror("ERROR writing to socket");
+			return 1;
+		}
 	}
-	printf("Here is the message: %s\n",buffer);
+    
+	
+
 
 
 	close(newsockfd);
+
+	//loop end
+
     return 0; 
 }
+
+void doWork(){
+
+};

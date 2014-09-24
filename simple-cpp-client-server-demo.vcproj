@@ -175,6 +175,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\copyServer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\parallelClient.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\server.cpp"
 				>
 			</File>
