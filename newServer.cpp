@@ -85,6 +85,7 @@ int main(int argc , char *argv[])
  
         //add master socket to set
         FD_SET(master_socket, &readfds);
+		//FD_SET(STDIN_FILENO, &readfds);
         max_sd = master_socket;
 		
         //add child sockets to set
@@ -178,13 +179,18 @@ int main(int argc , char *argv[])
 						//if position is not empty
 						if( client_socket[i] != 0 )
 						{
-							//client_socket[i] = new_socket;
-							//printf("Adding to list of sockets as %d\n" , i);
+							//don't send the message to the sender
+							if(client_socket[i]!=sd){
+								//client_socket[i] = new_socket;
+								//printf("Adding to list of sockets as %d\n" , i);
 
-							if( send(client_socket[i], buffer, strlen(buffer), 0) != strlen(buffer) ) 
-							{
-								perror("send");
+								if( send(client_socket[i], buffer, strlen(buffer), 0) != strlen(buffer) ) 
+								{
+									perror("send");
+								}
+
 							}
+							
 
 
 						}

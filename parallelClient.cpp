@@ -147,7 +147,7 @@ void doWrite(int sockfd, int * isConnected){
 			return;
 		}
 
-		std::cout<<"Writer isConnected: "<<*isConnected<<std::endl;
+		//std::cout<<"Writer isConnected: "<<*isConnected<<std::endl;
 
 	}
 
